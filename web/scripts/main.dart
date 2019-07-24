@@ -4,19 +4,20 @@ Element div = querySelector('#output');
 void main() {
   SvgElement svg = DraggableNode.container;
   div.append(svg);
-  svg.append(DraggableNode("Hello").rect);
-  svg.append(DraggableNode("World", x:150).rect);
-  svg.append(DraggableNode("Goodbye", x: 300).rect);
+  svg.append(DraggableNode("Hello").node);
+  svg.append(DraggableNode("World", x:250).node);
+  svg.append(DraggableNode("Goodbye", x: 400).node);
 
 }
 
 class DraggableNode {
-  RectElement rect;
+  EllipseElement node;
   int width;
   int height;
   int x;
   int y;
   String text;
+
   static SvgElement _container;
   static SvgElement get container {
     if(_container == null) {
@@ -27,21 +28,21 @@ class DraggableNode {
     return _container;
   }
 
-  DraggableNode(String this.text, {this.width: 100, this.height: 100, this.x: 0, this.y:0}) {
-    rect = new RectElement();
-    rect.attributes["width"] = "$width";
-    rect.attributes["height"] = "$height";
-    rect.attributes["x"] = "$x";
-    rect.attributes["y"] = "$y";
-    rect.attributes["fill"] = "#ffffff";
-    rect.attributes["stroke"] = "#000000";
+  DraggableNode(String this.text, {this.width: 100, this.height: 50, this.x: 100, this.y:100}) {
+    node = new EllipseElement();
+    node.attributes["rx"] = "$width";
+    node.attributes["ry"] = "$height";
+    node.attributes["cx"] = "$x";
+    node.attributes["cy"] = "$y";
+    node.attributes["fill"] = "#ffffff";
+    node.attributes["stroke"] = "#000000";
 
-    rect.onMouseDown.listen((MouseEvent e) {
-      rect.attributes["fill"] = "#ff0000";
+    node.onMouseDown.listen((MouseEvent e) {
+      node.attributes["fill"] = "#ff0000";
     });
 
-    rect.onMouseUp.listen((MouseEvent e) {
-      rect.attributes["fill"] = "#ffffff";
+    node.onMouseUp.listen((MouseEvent e) {
+      node.attributes["fill"] = "#ffffff";
     });
   }
 }
