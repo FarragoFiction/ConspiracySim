@@ -11,5 +11,6 @@ void main() {
   DraggableNode hello = DraggableNode(graph,"Hello", x:250);
   a.attachToNode(hello);
   DraggableNode(graph,"To The World", x: 400);
+  graph.render();
 
 }

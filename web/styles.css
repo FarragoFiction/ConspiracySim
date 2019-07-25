@@ -2,12 +2,17 @@
     font-family: norse;
     src: url("../Fonts/viking/Viking.ttf");
 }
+
+@font-face {
+    font-family: cabin;
+    src: url("../Fonts/cabin.regular.ttf");
+}
 html, body {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Viking', sans-serif;
+  font-family: 'cabin', sans-serif;
 }
 
 #output {

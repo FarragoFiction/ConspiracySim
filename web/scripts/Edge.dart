@@ -8,7 +8,11 @@ class Edge {
     int node2ID;
     String fillColor;
     Graph graph;
-    Edge(Graph this.graph, this.node1ID, this.node2ID, {this.fillColor: "#000000"});
+    //can change the width here to convey connectedness
+    int width;
+    Edge(Graph this.graph, this.node1ID, this.node2ID, {this.fillColor: "#000000", this.width: 2}) {
+        graph.allEdges.add(this);
+    }
     LineElement line;
 
     void setup() {
@@ -22,6 +26,10 @@ class Edge {
         line.attributes["y1"]= "${node1.y}";
         line.attributes["x2"]= "${node2.x}";
         line.attributes["y2"]= "${node2.y}";
+        line.attributes["stroke-width"]= "$width";
+        line.attributes["stroke"] = fillColor;
+
+
     }
 
     void render(SvgElement svg) {

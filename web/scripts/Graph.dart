@@ -15,4 +15,14 @@ class Graph {
         }
         return _container;
     }
+
+    void render() {
+        for(DraggableNode node in allNodes.values) {
+            node.render(container);
+        }
+
+        for(Edge edge in allEdges) {
+            edge.render(container);
+        }
+    }
 }
