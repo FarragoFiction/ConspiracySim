@@ -9,6 +9,7 @@ class DraggableNode {
     EllipseElement node;
     static int lastId = 0; //load from save
     SvgElement group;
+    bool dragging = false;
     int id;
     List<Edge> edges;
     int height;
@@ -81,11 +82,22 @@ class DraggableNode {
         node.attributes["stroke"] = "#000000";
 
         node.onMouseDown.listen((MouseEvent e) {
+            dragging = true;
             node.attributes["fill"] = "#ff0000";
         });
 
         node.onMouseUp.listen((MouseEvent e) {
+            dragging = false;
             node.attributes["fill"] = "#ffffff";
+        });
+
+        node.onMouseMove.listen((MouseEvent e) {
+            print("dragging start");
+            if(dragging) {
+                node.attributes["fill"] = "#0000ff";
+                group.attributes["x"] = "${e.offset.x}";
+                group.attributes["y"] = "${e.offset.y}";
+            }
         });
         group.append(node);
     }

@@ -11,7 +11,7 @@ void main() {
   DraggableNode hello = DraggableNode(graph,"Hello", x:250, y:400);
   a.attachToNode(hello);
   DraggableNode world = DraggableNode(graph,"To The World", x: 400);
-  a.attachToNode(world,color: "#0000ff", size: 4);
+  a.attachToNode(world,color: "#0000ff", size: 8);
   DraggableNode world2 = DraggableNode(graph,"Goodbye", x: 300,y:700);
   hello.attachToNode(world2);
 
