@@ -18,7 +18,12 @@ class Edge {
     void setup() {
         print("setting up edge");
         line = LineElement();
-        //TODO calculate my two points based on where my two nodes are
+        line.attributes["stroke-width"]= "$width";
+        line.attributes["stroke"] = fillColor;
+        syncToNodes();
+    }
+
+    void syncToNodes() {
         DraggableNode node1 = graph.allNodes[node1ID];
         DraggableNode node2 = graph.allNodes[node2ID];
         //for now just put it at x/y and see what happens
@@ -26,9 +31,6 @@ class Edge {
         line.attributes["y1"]= "${node1.y+node1.height}";
         line.attributes["x2"]= "${node2.x+node2.width/2}";
         line.attributes["y2"]= "${node2.y+node2.height}";
-        line.attributes["stroke-width"]= "$width";
-        line.attributes["stroke"] = fillColor;
-
 
     }
 

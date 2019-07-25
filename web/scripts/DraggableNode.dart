@@ -46,6 +46,7 @@ class DraggableNode {
         group.attributes["y"]= "$y";
         setupNode();
         setupText();
+        setupControls();
 
     }
 
@@ -71,6 +72,31 @@ class DraggableNode {
 
     }
 
+    void setupControls() {
+        group.onMouseDown.listen((MouseEvent e) {
+            dragging = true;
+            node.attributes["fill"] = "#ff0000";
+        });
+
+        group.onMouseUp.listen((MouseEvent e) {
+            dragging = false;
+            node.attributes["fill"] = "#ffffff";
+        });
+
+        group.onMouseLeave.listen((MouseEvent e) {
+            dragging = false;
+            node.attributes["fill"] = "#ffffff";
+        });
+
+        group.onMouseMove.listen((MouseEvent e) {
+            e.stopPropagation();
+            if(dragging) {
+                node.attributes["fill"] = "#0000ff";
+                handleMove((e.offset.x - width*0.75).ceil(), (e.offset.y - height*0.75).ceil());
+            }
+        });
+    }
+
     void setupNode() {
         node = new EllipseElement();
         width = textToWidth(text, fontSize);
@@ -81,29 +107,17 @@ class DraggableNode {
         node.attributes["fill"] = "#ffffff";
         node.attributes["stroke"] = "#000000";
 
-        node.onMouseDown.listen((MouseEvent e) {
-            dragging = true;
-            node.attributes["fill"] = "#ff0000";
-        });
 
-        node.onMouseUp.listen((MouseEvent e) {
-            dragging = false;
-            node.attributes["fill"] = "#ffffff";
-        });
-
-        node.onMouseLeave.listen((MouseEvent e) {
-            dragging = false;
-            node.attributes["fill"] = "#ffffff";
-        });
-
-        node.onMouseMove.listen((MouseEvent e) {
-            if(dragging) {
-                node.attributes["fill"] = "#0000ff";
-
-                group.attributes["x"] = "${(e.offset.x - width/2).ceil()}";
-                group.attributes["y"] = "${(e.offset.y - height/2).ceil()}";
-            }
-        });
         group.append(node);
+    }
+
+    void handleMove(int newX, int newY) {
+        x = newX;
+        y = newY;
+        group.attributes["x"] = "$x";
+        group.attributes["y"] = "$y";
+        for(Edge edge in edges) {
+            edge.syncToNodes();
+        }
     }
 }
