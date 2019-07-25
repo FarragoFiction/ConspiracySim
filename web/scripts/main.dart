@@ -2,12 +2,14 @@ import 'dart:html';
 import 'dart:svg';
 
 import 'DraggableNode.dart';
+import 'Graph.dart';
 Element div = querySelector('#output');
 void main() {
-  SvgElement svg = DraggableNode.container;
-  div.append(svg);
-  svg.append(DraggableNode("A").group);
-  svg.append(DraggableNode("Hello", x:250).group);
-  svg.append(DraggableNode("To The World", x: 400).group);
+  Graph graph = new Graph();
+  div.append(graph.container);
+  DraggableNode a = DraggableNode(graph,"A");
+  DraggableNode hello = DraggableNode(graph,"Hello", x:250);
+  a.attachToNode(hello);
+  DraggableNode(graph,"To The World", x: 400);
 
 }

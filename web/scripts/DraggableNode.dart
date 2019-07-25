@@ -1,30 +1,37 @@
 
 import 'dart:html';
 import 'dart:svg';
+import 'package:CommonLib/Collection.dart';
 
+import 'Edge.dart';
+import 'Graph.dart';
 class DraggableNode {
     EllipseElement node;
+    static int lastId = 0; //load from save
     SvgElement group;
-    //width is automatic
+    int id;
+    List<Edge> edges;
+    //    //width is automatic
     int height;
     int x;
     int y;
     int fontSize = 20;
     String text;
     TextElement textElement;
+    Graph graph;
 
-    static SvgElement _container;
-    static SvgElement get container {
-        if(_container == null) {
-            _container = SvgElement.tag("svg"); //removing 'new' bothers me on a fundamental level
-            _container.attributes["width"] = "1000";
-            _container.attributes["height"] = "1000";
-        }
-        return _container;
+
+    DraggableNode(Graph this.graph, String this.text, {this.edges: null, this.height: 50, this.x: 100, this.y:100}) {
+        id = lastId;
+        graph.allNodes[id] = this;
+        lastId ++;
+        edges ??= List<Edge>();
+        //can get pair to get the weight out.
+        setupGroup();
     }
 
-    DraggableNode(String this.text, {this.height: 50, this.x: 100, this.y:100}) {
-        setupGroup();
+    void render(SvgElement svg) {
+        svg.append(group);
     }
 
     static int textToWidth(String text, int fontSize) {
@@ -36,14 +43,21 @@ class DraggableNode {
         //a nested svg can have x/y set, but a group needs a transform and i don't wanna deal with that
         group.attributes["x"]= "$x";
         group.attributes["y"]= "$y";
-
-
         setupNode();
         setupText();
 
-        group.append(node);
-        group.append(textElement);
     }
+
+    void attachToNode(DraggableNode other) {
+        if(this == other) {
+            window.console.warn("Look. Don't attach a node to itself. Bad things happen when your conspiracies are THAT convoluted.");
+        }
+        Edge edge = Edge(graph,this.id, other.id);
+        edges.add(edge);
+        other.edges.add(edge);
+        edge.setup();
+    }
+
 
     void setupText() {
       textElement = TextElement()..text = text;
@@ -52,6 +66,7 @@ class DraggableNode {
       textElement.attributes["x"]= "${width/4}";
       textElement.attributes["y"]= "${height*1.1}";
       textElement.attributes["font-size"]= "${fontSize}";
+      group.append(textElement);
 
     }
 
@@ -72,5 +87,6 @@ class DraggableNode {
         node.onMouseUp.listen((MouseEvent e) {
             node.attributes["fill"] = "#ffffff";
         });
+        group.append(node);
     }
 }
