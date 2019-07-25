@@ -91,12 +91,17 @@ class DraggableNode {
             node.attributes["fill"] = "#ffffff";
         });
 
+        node.onMouseLeave.listen((MouseEvent e) {
+            dragging = false;
+            node.attributes["fill"] = "#ffffff";
+        });
+
         node.onMouseMove.listen((MouseEvent e) {
-            print("dragging start");
             if(dragging) {
                 node.attributes["fill"] = "#0000ff";
-                group.attributes["x"] = "${e.offset.x}";
-                group.attributes["y"] = "${e.offset.y}";
+
+                group.attributes["x"] = "${(e.offset.x - width/2).ceil()}";
+                group.attributes["y"] = "${(e.offset.y - height/2).ceil()}";
             }
         });
         group.append(node);
