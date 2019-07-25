@@ -11,8 +11,8 @@ class DraggableNode {
     SvgElement group;
     int id;
     List<Edge> edges;
-    //    //width is automatic
     int height;
+    int width;
     int x;
     int y;
     int fontSize = 20;
@@ -48,11 +48,11 @@ class DraggableNode {
 
     }
 
-    void attachToNode(DraggableNode other) {
+    void attachToNode(DraggableNode other, {String color: "#ff0000", int size:2}) {
         if(this == other) {
             window.console.warn("Look. Don't attach a node to itself. Bad things happen when your conspiracies are THAT convoluted.");
         }
-        Edge edge = Edge(graph,this.id, other.id);
+        Edge edge = Edge(graph,this.id, other.id, fillColor: color, width: size);
         edges.add(edge);
         other.edges.add(edge);
         edge.setup();
@@ -72,7 +72,7 @@ class DraggableNode {
 
     void setupNode() {
         node = new EllipseElement();
-        var width = textToWidth(text, fontSize);
+        width = textToWidth(text, fontSize);
         node.attributes["rx"] = "${width}";
         node.attributes["ry"] = "$height";
         node.attributes["cx"] = "${width}";
