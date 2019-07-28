@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'dart:svg';
+import 'package:LoaderLib/Loader.dart';
 
 import 'DraggableNode.dart';
 import 'Graph.dart';
@@ -17,4 +18,12 @@ void main() {
 
   graph.render();
 
+}
+
+void loadPassPhrases() async {
+  //http://farragofiction.com:85/GetEdges?phrases=warning,weird,echidnas,echidnamilk
+  //for now, just load this test set
+  final dynamic jsonRet = await Loader.getResource(
+      "http://farragofiction.com:85/GetEdges?phrases=warning,weird,echidnas,echidnamilk");
+  //only the edges are stored in json. whoops.
 }

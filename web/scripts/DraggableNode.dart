@@ -5,6 +5,9 @@ import 'package:CommonLib/Collection.dart';
 
 import 'Edge.dart';
 import 'Graph.dart';
+
+//TODO add natural sort of how many edges the node has
+
 class DraggableNode {
     EllipseElement node;
     static int lastId = 0; //load from save
@@ -22,6 +25,7 @@ class DraggableNode {
     Graph graph;
 
 
+    //TODO eventually graph will decide where to place nodes before rendering
     DraggableNode(Graph this.graph, String this.text, {this.edges: null, this.height: 50, this.x: 100, this.y:100}) {
         id = lastId;
         graph.allNodes[id] = this;
