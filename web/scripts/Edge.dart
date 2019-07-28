@@ -40,7 +40,7 @@ class Edge {
         node2.edges.add(this);
         node1ID = node1.id;
         node2ID = node2.id;
-
+        graph.allEdges.add(this);
         setup();
     }
 

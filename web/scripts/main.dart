@@ -5,8 +5,8 @@ import 'package:LoaderLib/Loader.dart';
 import 'DraggableNode.dart';
 import 'Graph.dart';
 Element div = querySelector('#output');
-void main() {
-  Graph graph = new Graph();
+Future<void> main() async {
+  Graph graph = Graph();
   div.append(graph.container);
   DraggableNode a = DraggableNode(graph,"A");
   DraggableNode hello = DraggableNode(graph,"Hello", x:250, y:400);
@@ -16,6 +16,8 @@ void main() {
   DraggableNode world2 = DraggableNode(graph,"Goodbye", x: 300,y:700);
   hello.attachToNode(world2);
 
+  await loadPassPhrases();
+  graph.distributeNodes();
   graph.render();
 
 }

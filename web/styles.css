@@ -15,6 +15,10 @@ html, body {
   font-family: 'cabin', sans-serif;
 }
 
+.conspiracyBoard{
+    border: 5px solid red;
+}
+
 #output {
   padding: 20px;
   text-align: center;
