@@ -10,7 +10,7 @@ import 'Graph.dart';
 //TODO add natural sort of how many edges the node has
 
 class DraggableNode {
-    EllipseElement node;
+    RectElement node;
     static int lastId = 0; //load from save
     SvgElement group;
     bool dragging = false;
@@ -70,8 +70,8 @@ class DraggableNode {
     void setupText() {
       textElement = TextElement()..text = text;
       textElement.attributes["fill"] = "#00ff00";
-      int width = textToWidth(text, fontSize);
-      textElement.attributes["x"]= "${width/4}";
+      width = textToWidth(text, fontSize);
+      textElement.attributes["x"]= "${width/2+10}";
       textElement.attributes["y"]= "${height*1.1}";
       textElement.attributes["font-size"]= "${fontSize}";
       group.append(textElement);
@@ -98,7 +98,7 @@ class DraggableNode {
             e.stopPropagation();
             if(dragging) {
                 node.attributes["fill"] = "#0000ff";
-                handleMove((e.offset.x - width*0.75).ceil(), (e.offset.y - height*0.75).ceil());
+                handleMove((e.offset.x).ceil(), (e.offset.y).ceil());
             }
         });
     }
@@ -115,16 +115,14 @@ class DraggableNode {
     }
 
     void setupNode() {
-        node = new EllipseElement();
+        node = new RectElement();
         width = textToWidth(text, fontSize);
-        node.attributes["rx"] = "${width}";
-        node.attributes["ry"] = "$height";
-        node.attributes["cx"] = "${width}";
-        node.attributes["cy"] = "${height}";
+        node.attributes["width"] = "$width";
+        node.attributes["height"] = "$height";
+        node.attributes["x"] = "${width/2}";
+        node.attributes["y"] = "${height/2}";
         node.attributes["fill"] = "#ffffff";
         node.attributes["stroke"] = "#000000";
-
-
         group.append(node);
     }
 

@@ -59,9 +59,9 @@ class Edge {
         DraggableNode node2 = graph.allNodes[node2ID];
         //for now just put it at x/y and see what happens
         line.attributes["x1"]= "${node1.x+node1.width/2}";
-        line.attributes["y1"]= "${node1.y+node1.height}";
+        line.attributes["y1"]= "${node1.y+(node1.height*1.5).ceil()}";
         line.attributes["x2"]= "${node2.x+node2.width/2}";
-        line.attributes["y2"]= "${node2.y+node2.height}";
+        line.attributes["y2"]= "${node2.y+(node2.height*1.5).ceil()}";
 
     }
 
