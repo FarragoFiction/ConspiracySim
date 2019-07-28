@@ -12,14 +12,14 @@ class Edge {
     Graph graph;
     //can change the width here to convey connectedness
     int width;
-    Edge(Graph this.graph, this.node1ID, this.node2ID, {this.fillColor: "#ff0000", this.width: 2}) {
+    Edge(this.graph, this.node1ID, this.node2ID, {this.fillColor: "#ff0000", this.width: 2}) {
         graph.allEdges.add(this);
     }
 
-    Edge.fromJSON(Graph graph,dynamic jsonRet){
+    Edge.fromJSON(this.graph,dynamic jsonRet){
         final JsonHandler json = new JsonHandler(jsonRet);
-        String node1String = json.getValue("passPhrase1");
-        String node2String = json.getValue("passPhrase2");
+        final String node1String = json.getValue("passPhrase1");
+        final String node2String = json.getValue("passPhrase2");
         DraggableNode node1;
         DraggableNode node2;
         width = json.getValue("weight");
@@ -33,7 +33,7 @@ class Edge {
         if(graph.allNodes.containsKey(node2String)){
             node2 = graph.allNodes[node2String];
         }else{
-            node2 = DraggableNode(graph, node2String);
+            node2 = new DraggableNode(graph, node2String);
         }
         //make sure the nodes know about you and vice versa
         node1.edges.add(this);

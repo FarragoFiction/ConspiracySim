@@ -3,9 +3,11 @@ import 'dart:svg';
 import 'package:LoaderLib/Loader.dart';
 
 import 'DraggableNode.dart';
+import 'Edge.dart';
 import 'Graph.dart';
 Element div = querySelector('#output');
 Future<void> main() async {
+  Loader.init();
   Graph graph = Graph();
   div.append(graph.container);
   DraggableNode a = DraggableNode(graph,"A");
@@ -16,16 +18,16 @@ Future<void> main() async {
   DraggableNode world2 = DraggableNode(graph,"Goodbye", x: 300,y:700);
   hello.attachToNode(world2);
 
-  await loadPassPhrases();
+  await loadPassPhrases(graph);
   graph.distributeNodes();
   graph.render();
 
 }
 
-void loadPassPhrases() async {
+void loadPassPhrases(Graph graph) async {
   //http://farragofiction.com:85/GetEdges?phrases=warning,weird,echidnas,echidnamilk
   //for now, just load this test set
   final dynamic jsonRet = await Loader.getResource(
-      "http://farragofiction.com:85/GetEdges?phrases=warning,weird,echidnas,echidnamilk");
-  //only the edges are stored in json. whoops.
+      "http://farragofiction.com:85/GetEdges?phrases=warning,weird,echidnas,echidnamilk", format: Formats.json);
+  Edge.loadJSONForMultipleEdges(graph, jsonRet);
 }

@@ -18,14 +18,16 @@ class Graph {
     }
 
     void distributeNodes() {
+        print("graph is handling deciding where nodes go");
         //put all the nodes in random places within the graph
-        Random rand = Random();
+        final Random rand = Random();
         for(DraggableNode node in allNodes.values) {
-            node.x = rand.nextIntRange(50,int.parse(_container.attributes["width"]));
-            node.y = rand.nextIntRange(50,int.parse(_container.attributes["height"]));
+            final int x = rand.nextIntRange(50,950);
+            final int y = rand.nextIntRange(50,950);
+            node.handleMove(x,y);
         }
 
-        for(Edge edge in allEdges) {
+        for(final Edge edge in allEdges) {
             edge.syncToNodes();
         }
     }
