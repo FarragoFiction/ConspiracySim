@@ -4,7 +4,7 @@ import 'DraggableNode.dart';
 import 'Edge.dart';
 
 class Graph {
-    Map<int, DraggableNode> allNodes = new Map<int, DraggableNode>();
+    Map<String, DraggableNode> allNodes = new Map<String, DraggableNode>();
     List<Edge> allEdges = List<Edge>(); //make sure to load all edges SECOND cuz they rely on nodes
     SvgElement _container;
     SvgElement get container {
@@ -26,7 +26,7 @@ class Graph {
             final int y = rand.nextIntRange(50,950);
             node.handleMove(x,y);
         }
-
+        print("there are this many edge: ${allEdges.length}");
         for(final Edge edge in allEdges) {
             edge.syncToNodes();
         }

@@ -2,6 +2,7 @@
 import 'dart:html';
 import 'dart:svg';
 import 'package:CommonLib/Collection.dart';
+import 'package:CommonLib/Random.dart';
 
 import 'Edge.dart';
 import 'Graph.dart';
@@ -13,7 +14,6 @@ class DraggableNode {
     static int lastId = 0; //load from save
     SvgElement group;
     bool dragging = false;
-    int id;
     List<Edge> edges;
     int height;
     int width;
@@ -23,14 +23,16 @@ class DraggableNode {
     String text;
     TextElement textElement;
     Graph graph;
+    String color;
 
 
     //TODO eventually graph will decide where to place nodes before rendering
     DraggableNode(Graph this.graph, String this.text, {this.edges: null, this.height: 50, this.x: 100, this.y:100}) {
-        id = lastId;
-        graph.allNodes[id] = this;
+        graph.allNodes[text] = this;
         lastId ++;
         edges ??= List<Edge>();
+        final Random rand = new Random();
+        color = "rgb(${rand.nextIntRange(0,255)},${rand.nextIntRange(0,255)},${rand.nextIntRange(0,255)})";
         //can get pair to get the weight out.
         setupGroup();
     }
@@ -58,7 +60,7 @@ class DraggableNode {
         if(this == other) {
             window.console.warn("Look. Don't attach a node to itself. Bad things happen when your conspiracies are THAT convoluted.");
         }
-        Edge edge = Edge(graph,this.id, other.id, fillColor: color, width: size);
+        Edge edge = Edge(graph,this.text, other.text, fillColor: color, width: size);
         edges.add(edge);
         other.edges.add(edge);
         edge.setup();
@@ -99,6 +101,17 @@ class DraggableNode {
                 handleMove((e.offset.x - width*0.75).ceil(), (e.offset.y - height*0.75).ceil());
             }
         });
+    }
+
+    static DraggableNode  getNode(Graph graph, String text) {
+        print("I'm looking for a node called $text");
+        if(graph.allNodes.containsKey(text)){
+            print("I found it in the graph!");
+            return graph.allNodes[text];
+        }else{
+            print("I had to make a new one! (graph was ${graph.allNodes.keys.join(",")})");
+            return DraggableNode(graph, text);
+        }
     }
 
     void setupNode() {

@@ -6,8 +6,9 @@ import 'DraggableNode.dart';
 import 'Graph.dart';
 
 class Edge {
-    int node1ID;
-    int node2ID;
+    //the text a node displays is guaranteed unique
+    String node1ID;
+    String node2ID;
     String fillColor;
     Graph graph;
     //can change the width here to convey connectedness
@@ -16,31 +17,21 @@ class Edge {
         graph.allEdges.add(this);
     }
 
-    Edge.fromJSON(this.graph,dynamic jsonRet){
+    Edge.fromJSON(this.graph,dynamic jsonRet,{this.fillColor: "#ff0000"}){
         final JsonHandler json = new JsonHandler(jsonRet);
-        final String node1String = json.getValue("passPhrase1");
-        final String node2String = json.getValue("passPhrase2");
-        DraggableNode node1;
-        DraggableNode node2;
+        node1ID = json.getValue("passPhrase1");
+        node2ID = json.getValue("passPhrase2");
         width = json.getValue("weight");
+        print("loaded width is $width");
         //if the node doesn't exist yet, it is necessary to create it
-        if(graph.allNodes.containsKey(node1String)){
-            node1 = graph.allNodes[node1String];
-        }else{
-            node1 = DraggableNode(graph, node1String);
-        }
+        DraggableNode node1 = DraggableNode.getNode(graph, node1ID);
+        DraggableNode node2 = DraggableNode.getNode(graph, node2ID);
 
-        if(graph.allNodes.containsKey(node2String)){
-            node2 = graph.allNodes[node2String];
-        }else{
-            node2 = new DraggableNode(graph, node2String);
-        }
         //make sure the nodes know about you and vice versa
         node1.edges.add(this);
         node2.edges.add(this);
-        node1ID = node1.id;
-        node2ID = node2.id;
         graph.allEdges.add(this);
+        fillColor = node1.color;
         setup();
     }
 
