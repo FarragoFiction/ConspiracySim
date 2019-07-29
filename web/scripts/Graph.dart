@@ -18,6 +18,30 @@ class Graph {
     }
 
     void distributeNodes() {
+        distributeNodesGrid();
+    }
+
+    void distributeNodesGrid() {
+        //first, sort nodes by number of edges
+        final List<DraggableNode> nodes = new List<DraggableNode>.from(allNodes.values);
+        print("nodes is $nodes");
+        nodes.sort((a, b) => a.edges.length.compareTo(b.edges.length));
+        for(int x = 0; x<800; x+=300) {
+            for(int y = 0; y<1000; y+=100) {
+                if(nodes.isNotEmpty) {
+                    nodes.first.handleMove(x, y);
+                    nodes.remove(nodes.first);
+                }else {
+                    break;
+                }
+            }
+        }
+        for(final Edge edge in allEdges) {
+            edge.syncToNodes();
+        }
+    }
+
+    void distributeNodesRandom() {
         print("graph is handling deciding where nodes go");
         //put all the nodes in random places within the graph
         final Random rand = Random();
@@ -33,12 +57,14 @@ class Graph {
     }
 
     void render() {
-        for(DraggableNode node in allNodes.values) {
-            node.render(container);
+
+
+        for(final Edge edge in allEdges) {
+            edge.render(container);
         }
 
-        for(Edge edge in allEdges) {
-            edge.render(container);
+        for(final DraggableNode node in allNodes.values) {
+            node.render(container);
         }
     }
 }

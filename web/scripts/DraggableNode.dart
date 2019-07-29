@@ -127,6 +127,7 @@ class DraggableNode {
     }
 
     void handleMove(int newX, int newY) {
+        print("moving $text to $newX, $newY");
         x = newX;
         y = newY;
         group.attributes["x"] = "$x";
