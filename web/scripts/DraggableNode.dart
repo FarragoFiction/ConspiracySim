@@ -110,7 +110,7 @@ class DraggableNode {
             e.stopPropagation();
             if(dragging) {
                 node.attributes["fill"] = "#0000ff";
-                handleMove((e.offset.x).ceil(), (e.offset.y).ceil());
+                handleMove((e.offset.x-width).ceil(), (e.offset.y-height).ceil());
             }
         });
     }

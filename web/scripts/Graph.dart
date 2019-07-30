@@ -19,7 +19,7 @@ class Graph {
     }
 
     void distributeNodes() {
-        distributeNodesCircles();
+        distributeNodesGrid();
     }
 
     void distributeNodesCircles() {
@@ -53,11 +53,13 @@ class Graph {
         print("angles would be $anglePerNode");
         List<DraggableNode> connections = centerNode.connections;
         int currentAngle = 0;
-        final int radius = 100; //TODO calculate this to be longer if angle is smaller
-        for(DraggableNode node in connections) {
+        int radius = 200; //TODO calculate this to be longer if angle is smaller
+        for(final DraggableNode node in connections) {
+            print("currentAngle is $currentAngle");
             final int x = calculateXFromAngle(currentAngle, centerNode.x, radius);
             final int y = calculateXFromAngle(currentAngle, centerNode.y, radius);
             node.handleMove(x,y);
+            currentAngle += anglePerNode;
             //TODO recursively call startcenter recurse on this, with this as the center node and origin as origin
 
         }
@@ -69,12 +71,12 @@ class Graph {
     }
 
     int calculateXFromAngle(int angle, int x, int radius) {
-        return (x + radius * Math.sin(angle * Math.pi/180)).ceil();
+        return (x + (radius * Math.sin(angle * Math.pi/180)).ceil());
 
     }
 
-    int calculateYFromAngle(int angle, int x, int radius) {
-        return (x + radius * Math.sin(angle * Math.pi/180)).ceil();
+    int calculateYFromAngle(int angle, int y, int radius) {
+        return (y +  (radius *Math.cos(angle * Math.pi/180)).ceil());
 
     }
 
@@ -82,7 +84,7 @@ class Graph {
         //first, sort nodes by number of edges
         final List<DraggableNode> nodes = new List<DraggableNode>.from(allNodes.values);
         print("nodes is $nodes");
-        nodes.sort((a, b) => a.edges.length.compareTo(b.edges.length));
+        nodes.sort((a, b) => b.edges.length.compareTo(a.edges.length));
         for(int x = 0; x<800; x+=300) {
             for(int y = 0; y<1000; y+=100) {
                 if(nodes.isNotEmpty) {
