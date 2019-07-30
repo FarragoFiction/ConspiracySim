@@ -40,16 +40,20 @@ class Graph {
     }
 
     void pruneToPhraseAndEdges(String passPhrase) {
-        DraggableNode node = allNodes[passPhrase];
+        print("pruning nodes");
+        final DraggableNode node = allNodes[passPhrase];
+        print("passphrase is $passPhrase and node is $node ");
         if(node != null) {
+            print("node wasn't null");
             List<DraggableNode> prunedNodes = node.connections;
             allNodes.clear();
             for(final DraggableNode n in prunedNodes) {
                 allNodes[n.text] = n;
             }
-            //TODO need to remove all edges that reference a thing that doesn't exist anymore
-            final List<Edge> edgeCopy = new List<Edge>.from(allEdges);
+            print("nodes before is ${allNodes.length}");
             allNodes[node.text] = node;
+            print("nodes after is ${allNodes.length}");
+            final List<Edge> edgeCopy = new List<Edge>.from(allEdges);
             for(Edge e in edgeCopy) {
                 if(allNodes.containsKey(e.node2ID) && allNodes.containsKey(e.node1ID)) {
                     //you may live
@@ -64,6 +68,7 @@ class Graph {
     }
 
     void distributeNodes() {
+        print("nodes are ${allNodes.length}");
         distributeNodesRandom();
     }
 
