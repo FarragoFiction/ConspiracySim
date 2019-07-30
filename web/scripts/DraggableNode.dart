@@ -100,12 +100,9 @@ class DraggableNode {
     }
 
     static DraggableNode  getNode(Graph graph, String text) {
-        print("I'm looking for a node called $text");
         if(graph.allNodes.containsKey(text)){
-            print("I found it in the graph!");
             return graph.allNodes[text];
         }else{
-            print("I had to make a new one! (graph was ${graph.allNodes.keys.join(",")})");
             return DraggableNode(graph, text);
         }
     }

@@ -22,7 +22,6 @@ class Edge {
         node1ID = json.getValue("passPhrase1");
         node2ID = json.getValue("passPhrase2");
         width = json.getValue("weight");
-        print("loaded width is $width");
         //if the node doesn't exist yet, it is necessary to create it
         DraggableNode node1 = DraggableNode.getNode(graph, node1ID);
         DraggableNode node2 = DraggableNode.getNode(graph, node2ID);
@@ -37,10 +36,17 @@ class Edge {
 
     //given a bunch of edges in json (not a list, but a hash), it will generate the nodes and edges needed
     static void loadJSONForMultipleEdges(Graph graph,dynamic jsonRet){
+        int weightThreshold = 0;
+        if(Uri.base.queryParameters['threshold'] != null) {
+            weightThreshold = int.parse(Uri.base.queryParameters['threshold']);
+        }
+        print("threshold is $weightThreshold");
         final JsonHandler json = new JsonHandler(jsonRet);
         for(dynamic d in json.data.keys) {
-            print("d is $d");
-            (new Edge.fromJSON(graph,json.getValue(d)));
+            //print("d is $d");
+            if(json.getValue(d)["weight"] >weightThreshold) {
+                (new Edge.fromJSON(graph, json.getValue(d)));
+            }
         }
 
     }
@@ -57,7 +63,6 @@ class Edge {
     void syncToNodes() {
         DraggableNode node1 = graph.allNodes[node1ID];
         DraggableNode node2 = graph.allNodes[node2ID];
-        print("node1: $node1, node2 $node2");
         //for now just put it at x/y and see what happens
         line.attributes["x1"]= "${node1.x+node1.width/2}";
         line.attributes["y1"]= "${node1.y+(node1.height*1.5).ceil()}";

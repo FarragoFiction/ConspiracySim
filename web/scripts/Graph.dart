@@ -151,7 +151,7 @@ class Graph {
         print("all edges are ${allEdges.length}");
 
         //put all the nodes in random places within the graph
-        final Random rand = Random();
+        final Random rand = Random(13);
         for(DraggableNode node in allNodes.values) {
             final int x = rand.nextIntRange(50,700);
             final int y = rand.nextIntRange(50,700);
