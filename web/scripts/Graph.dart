@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:svg';
 import 'package:CommonLib/Random.dart';
 import 'DraggableNode.dart';
@@ -7,6 +8,7 @@ import 'dart:math' as Math;
 class Graph {
     Map<String, DraggableNode> allNodes = new Map<String, DraggableNode>();
     List<Edge> allEdges = List<Edge>(); //make sure to load all edges SECOND cuz they rely on nodes
+    DraggableNode draggingNode;
     SvgElement _container;
     SvgElement get container {
         if(_container == null) {
@@ -16,6 +18,25 @@ class Graph {
             _container.attributes["height"] = "1000";
         }
         return _container;
+    }
+
+    Graph() {
+        window.onMouseUp.listen((MouseEvent e) {
+            if(draggingNode != null) {
+                draggingNode.node.attributes["fill"] = "#ffffff";
+                draggingNode.node.style.zIndex = "1";
+                draggingNode = null;
+            }
+        });
+
+
+        window.onMouseMove.listen((MouseEvent e) {
+            e.stopPropagation();
+            if(draggingNode != null) {
+                draggingNode.node.attributes["fill"] = "#0000ff";
+                draggingNode.handleMove((e.offset.x-draggingNode.width/2).ceil(), (e.offset.y-draggingNode.height/2).ceil());
+            }
+        });
     }
 
     void distributeNodes() {

@@ -13,7 +13,6 @@ class DraggableNode {
     RectElement node;
     static int lastId = 0; //load from save
     SvgElement group;
-    bool dragging = false;
     List<Edge> edges;
     int height;
     int width;
@@ -92,27 +91,12 @@ class DraggableNode {
 
     void setupControls() {
         group.onMouseDown.listen((MouseEvent e) {
-            dragging = true;
+            graph.draggingNode = this;
             node.attributes["fill"] = "#ff0000";
+            node.style.zIndex = "1000";
         });
 
-        group.onMouseUp.listen((MouseEvent e) {
-            dragging = false;
-            node.attributes["fill"] = "#ffffff";
-        });
 
-        group.onMouseLeave.listen((MouseEvent e) {
-            dragging = false;
-            node.attributes["fill"] = "#ffffff";
-        });
-
-        group.onMouseMove.listen((MouseEvent e) {
-            e.stopPropagation();
-            if(dragging) {
-                node.attributes["fill"] = "#0000ff";
-                handleMove((e.offset.x-width).ceil(), (e.offset.y-height).ceil());
-            }
-        });
     }
 
     static DraggableNode  getNode(Graph graph, String text) {
