@@ -2,6 +2,7 @@ import 'dart:svg';
 import 'package:CommonLib/Random.dart';
 import 'DraggableNode.dart';
 import 'Edge.dart';
+import 'dart:math' as Math;
 
 class Graph {
     Map<String, DraggableNode> allNodes = new Map<String, DraggableNode>();
@@ -48,10 +49,32 @@ class Graph {
         //then, recurse on each of them, placing THEIR children only in the 180 degrees
 
         //first divide 360 (or 180) degrees by how many edges there are
+        final int anglePerNode = (360/centerNode.edges.length).ceil();
+        print("angles would be $anglePerNode");
+        List<DraggableNode> connections = centerNode.connections;
+        int currentAngle = 0;
+        final int radius = 100; //TODO calculate this to be longer if angle is smaller
+        for(DraggableNode node in connections) {
+            final int x = calculateXFromAngle(currentAngle, centerNode.x, radius);
+            final int y = calculateXFromAngle(currentAngle, centerNode.y, radius);
+            node.handleMove(x,y);
+            //TODO recursively call startcenter recurse on this, with this as the center node and origin as origin
+
+        }
         //then, figure out what angle each edge needs to be at
         //take the angle and arcsin and arccosin to figure out
         // what x/y to put it at (multiplied by a distance needed to get them far enough from each other)
         //then, call this method with each node as the center node
+
+    }
+
+    int calculateXFromAngle(int angle, int x, int radius) {
+        return (x + radius * Math.sin(angle * Math.pi/180)).ceil();
+
+    }
+
+    int calculateYFromAngle(int angle, int x, int radius) {
+        return (x + radius * Math.sin(angle * Math.pi/180)).ceil();
 
     }
 

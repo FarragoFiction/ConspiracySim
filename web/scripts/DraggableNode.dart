@@ -37,6 +37,18 @@ class DraggableNode {
         setupGroup();
     }
 
+    List<DraggableNode> get connections {
+        List<DraggableNode> ret = new List<DraggableNode>();
+        for(Edge edge in edges) {
+            if(edge.node1ID == text) {
+                ret.add(graph.allNodes[edge.node2ID]);
+            }else {
+                ret.add(graph.allNodes[edge.node1ID]);
+            }
+        }
+        return ret;
+    }
+
     void render(SvgElement svg) {
         svg.append(group);
     }
