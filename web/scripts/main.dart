@@ -29,14 +29,21 @@ Future<void> main() async {
 
 Future<void> loadPassPhrases(Graph graph) async {
   //http://farragofiction.com:85/GetEdges?phrases=warning,weird,echidnas,echidnamilk
-  String phrases = "warning,pvpisnotglitch,exilethebody,echidnaScience,yearnfulNode10,yearnfulNode1,herstory,so_fucking_meta,smokey,smokeyEternal,jr_is_a_jar,svg,tin,metametameta,karmicRetribution10,ab_alchemized,cheetoTimeline5,cheetoTimeline1,birdRealm0,coward_and_a_fraud,sorry about the buttons,CaseStudy_Unused,echidnamilk,CaseStudy_Hands,charming,asdfghjkl,sburbsimyellowyard1,what_is_farragnarok,fuck0,heart_clover_star,songs_to_code_by_jrs_lament_cipah,lomat_by_fan_gnome,,113,nebulore,fan_raf_conspiracy_theory,argsaremypassion,echidnalaugh,turtles2,fan_cd_waste,inheritance,giggle_reading_neb_is_great,waste_of_void,About_Void,ProgrammingJourney,cthulhu_mixdown,cthulhu_mistake,abspiel,abconcerns,all_jr_headcanons,sage_advice_noodle,giggle_reading_own_troll_planet_8,jingle_lore,lomat_nearly_done";
-  //for now, just load this test set
-  String passPhrase = Uri.base.queryParameters['passPhrase'];
-  print("what");
-
+  final String knownKey = "AUDIOLOGSCASETTELIBRARY";
+  String phrases;
+  if(window.localStorage.containsKey(knownKey)){
+    print("loading phrases from local storage");
+    phrases = window.localStorage[knownKey]; //for now, just load this test set
+  }else{
+    print("using default phrases");
+    phrases = "warning,weird,echidnas,echidnamilk,hello_world,first";
+  }
+  final  String passPhrase = Uri.base.queryParameters['passPhrase'];
+  print("phrases are $phrases");
   final dynamic jsonRet = await Loader.getResource(
       "http://farragofiction.com:85/GetEdges?phrases=$phrases", format: Formats.json);
   Edge.loadJSONForMultipleEdges(graph, jsonRet);
-  print("hewwo");
-  graph.pruneToPhraseAndEdges(passPhrase);
+  if(passPhrase != null) {
+    graph.pruneToPhraseAndEdges(passPhrase);
+  }
 }
