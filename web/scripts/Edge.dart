@@ -57,6 +57,7 @@ class Edge {
     void syncToNodes() {
         DraggableNode node1 = graph.allNodes[node1ID];
         DraggableNode node2 = graph.allNodes[node2ID];
+        print("node1: $node1, node2 $node2");
         //for now just put it at x/y and see what happens
         line.attributes["x1"]= "${node1.x+node1.width/2}";
         line.attributes["y1"]= "${node1.y+(node1.height*1.5).ceil()}";

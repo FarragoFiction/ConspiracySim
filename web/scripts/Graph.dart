@@ -39,10 +39,35 @@ class Graph {
         });
     }
 
-    void distributeNodes() {
-        distributeNodesGrid();
+    void pruneToPhraseAndEdges(String passPhrase) {
+        DraggableNode node = allNodes[passPhrase];
+        if(node != null) {
+            List<DraggableNode> prunedNodes = node.connections;
+            allNodes.clear();
+            for(final DraggableNode n in prunedNodes) {
+                allNodes[n.text] = n;
+            }
+            //TODO need to remove all edges that reference a thing that doesn't exist anymore
+            final List<Edge> edgeCopy = new List<Edge>.from(allEdges);
+            allNodes[node.text] = node;
+            for(Edge e in edgeCopy) {
+                if(allNodes.containsKey(e.node2ID) && allNodes.containsKey(e.node1ID)) {
+                    //you may live
+                }else {
+                    if(allNodes.containsKey(e.node2ID)) allNodes[e.node2ID].edges.remove(e);
+                    if(allNodes.containsKey(e.node1ID)) allNodes[e.node1ID].edges.remove(e);
+
+                    allEdges.remove(e);
+                }
+            }
+        }
     }
 
+    void distributeNodes() {
+        distributeNodesRandom();
+    }
+
+    //TODO this doesn't work :( it makes a diagnoal line
     void distributeNodesCircles() {
         //first, sort nodes by number of edges
         final List<DraggableNode> nodes = new List<DraggableNode>.from(allNodes.values);
@@ -123,11 +148,13 @@ class Graph {
 
     void distributeNodesRandom() {
         print("graph is handling deciding where nodes go");
+        print("all edges are ${allEdges.length}");
+
         //put all the nodes in random places within the graph
         final Random rand = Random();
         for(DraggableNode node in allNodes.values) {
-            final int x = rand.nextIntRange(50,950);
-            final int y = rand.nextIntRange(50,950);
+            final int x = rand.nextIntRange(50,700);
+            final int y = rand.nextIntRange(50,700);
             node.handleMove(x,y);
         }
         print("there are this many edge: ${allEdges.length}");
@@ -137,8 +164,6 @@ class Graph {
     }
 
     void render() {
-
-
         for(final Edge edge in allEdges) {
             edge.render(container);
         }
